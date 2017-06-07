@@ -1,0 +1,7 @@
+<?php
+
+
+
+?>
+
+<!-- Startseite des Adminbereiches -->
