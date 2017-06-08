@@ -2,14 +2,16 @@
 
 class Constructor{
 
+  private static $_instance = null;
   public $title;
 	public $headline;
+  public $modfile;
   public $viewfile	= ".default";
 	public $cssfiles	= [];
 	public $jsfiles		= [];
 
   function __construct(){
-
+    self::$_instance = $this;
   }
 
   public function build(){
@@ -67,31 +69,40 @@ class Constructor{
     			$this->viewfile		= "impress.php";
     			break;
       }
-    }
-    switch ($this->view) {
-      case "view":
-        $this->title	= $this->title ?? TITLE;
-        $this->modfile	= __FRONTEND__ . "/view.php";
-        $this->cssfiles = array_merge([CSS_Bootstrap],$this->cssfiles,[CSS_styles]);
-        break;
 
-      case "login":
-  			$this->title	= $this->title ?? TITLE_ADMIN;
-  			$this->modfile	= __FRONTEND__ . "/login.php";
-  			$this->cssfiles	= array_merge([CSS_Bootstrap],$this->cssfiles,[CSS_login]);
-        break;
+      switch ($this->view) {
+        case "view":
+          $this->title	= TITLE;
+          $this->modfile	= __FRONTEND__ . "/view.php";
+          // $this->cssfiles = array_merge([CSS_Bootstrap],$this->cssfiles,[CSS_styles]);
+          break;
 
-      case "admin":
-  			$this->title	= $this->title ?? TITLE_ADMIN;
-  			$this->modfile	= __FRONTEND__ . "/admin.php";
-  			$this->cssfiles	= array_merge([CSS_Bootstrap],$this->cssfiles,[CSS_admin]);
-  			$this->jsfiles	= array_merge([JS_jQuery, JS_Bootstrap],$this->jsfiles,[JS_admin]);
-  			break;
+        case "login":
+  			  $this->title	= TITLE_ADMIN;
+  			  $this->modfile	= __FRONTEND__ . "/login.php";
+  			  // $this->cssfiles	= array_merge([CSS_Bootstrap],$this->cssfiles,[CSS_login]);
+          break;
 
-      default :
-  			return false;
+        case "admin":
+  			  $this->title	= TITLE_ADMIN;
+  			  $this->modfile	= __FRONTEND__ . "/admin.php";
+  			  // $this->cssfiles	= array_merge([CSS_Bootstrap],$this->cssfiles,[CSS_admin]);
+  			  // $this->jsfiles	= array_merge([JS_jQuery, JS_Bootstrap],$this->jsfiles,[JS_admin]);
+  			  break;
+
+        default :
+  			   return false;
+      }
+      include_once __FRONTEND__ . "/blueprint.php";
+		  return true;
     }
   }
+
+  static public function getInstance() {
+		if (self::$_instance === null)
+			self::$_instance = new Constructor();
+		return self::$_instance;
+	}
 }
 
 

@@ -1,6 +1,8 @@
 <?php
 
+$constr = Constructor::getInstance();
 
+require_once __PAGES__ . "/" . "$creator->viewfile";
 
 ?>
 
